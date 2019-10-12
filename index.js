@@ -1,11 +1,22 @@
 const commands = require('./commands');
 
 
+
 const readline = require("readline");
 const rl = readline.createInterface({
   input: process.stdin,
   output: process.stdout
 });
+
+const commandFuncWrapper = async (func, input) => {
+  try {
+    await func(input);
+  } catch (error) {
+    console.error(error);
+  }
+
+  setTimeout(start, 1000);
+}
 
 const start = async () => {
   console.log("\n------ New Task ------\n");
@@ -14,7 +25,7 @@ const start = async () => {
     const command = commands[commandStr.toLowerCase()];
 
     rl.question(command.question + " \n", (input)  => {
-      command.callback(input, () => setTimeout(start, 1000));
+      commandFuncWrapper(command.method, input)
     });
 
   });
