@@ -43,6 +43,7 @@ const parseName = ( name ) => {
 const commands = {
   usercreate: {
     question: "Name of user, first and last name, split by a space (e.g, Steve Gates):",
+    purpose: "Create and commit to db a User.",
     callback: async (name, cb) => {
       try {
         const [firstName, lastName, email] = parseName(name);
@@ -60,6 +61,7 @@ const commands = {
   },
   userfindbypk: {
     question: "User ID:",
+    purpose: "Find user by primary key (pk) and return User and associated UserAuth.",
     callback: async (id, cb) => {
       try {
         const user = await User.findByPk(Number(id), { include: { model: UserAuth, as: "auth" }});
@@ -78,6 +80,7 @@ const commands = {
   },
   authcreate: {
     question: "User ID that you'd like to assign this auth to:",
+    purpose: "Create and commit to db an UserAuth, with association to a User.",
     callback: async (id, cb) => {
       try {
         const user = await User.findByPk(Number(id));
@@ -103,6 +106,7 @@ const commands = {
   },
   bothcreate: {
     question: "Name of user, first and last name, split by a space (e.g, Steve Gates):",
+    purpose: "Create and commit to db both a User and an associated UserAuth with one call.",
     callback: async (name, cb) => {
       try {
         const [firstName, lastName, email] = parseName(name);
