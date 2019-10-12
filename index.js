@@ -15,7 +15,7 @@ const query = async () => {
   
   // console.log(process.memoryUsage());
   
-  rl.question("What is your command? UserCreate, UserAuthCreate \n", function (commandStr) {
+  rl.question("What is your command? UserCreate, UserAuthCreate, UserFindByPk \n", function (commandStr) {
     const command = commands[commandStr.toLowerCase()];
 
     rl.question(command.question + " \n", (input)  => {
@@ -50,6 +50,24 @@ const commands = {
           email: firstName + lastName + "@example.com",
         });
         if (user) console.log('Created: ', user.dataValues);
+
+        cb();
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  },
+  userfindbypk: {
+    question: "User ID:",
+    callback: async (id, cb) => {
+      try {
+        const user = await User.findByPk(Number(id), { include: { model: UserAuth, as: "auth", raw: true, }});
+        
+        if (user){
+          console.log('Found: ', user.dataValues)
+        }else{
+          console.log('User not found by ID: ' + id)
+        };
 
         cb();
       } catch (error) {
