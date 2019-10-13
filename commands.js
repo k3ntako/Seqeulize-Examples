@@ -6,6 +6,7 @@ const { parseName } = require('./utilities');
 
 module.exports = {
   usercreate: {
+    name: "userCreate",
     question: "Name of user, first and last name, split by a space (e.g, Steve Gates):",
     purpose: "Create and commit to db a User.",
     method: async (name) => {
@@ -18,6 +19,7 @@ module.exports = {
     }
   },
   userfindbypk: {
+    name: "userFindByPk",
     question: "User ID:",
     purpose: "Find user by primary key (pk) and return User and associated UserAuth.",
     method: async (id) => {
@@ -31,6 +33,7 @@ module.exports = {
     }
   },
   authcreate: {
+    name: "authCreate",
     question: "User ID that you'd like to assign this auth to:",
     purpose: "Create and commit to db an UserAuth, with association to a User.",
     method: async (id) => {
@@ -51,6 +54,7 @@ module.exports = {
     }
   },
   bothcreate: {
+    name: "bothCreate",
     question: "Name of user, first and last name, split by a space (e.g, Steve Gates):",
     purpose: "Create and commit to db both a User and an associated UserAuth with one call.",
     method: async (name) => {

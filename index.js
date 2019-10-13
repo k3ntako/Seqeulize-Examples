@@ -1,5 +1,8 @@
 const commands = require('./commands');
-
+let commandNames = "";
+for( let key in commands){
+  commandNames += commands[key].name + ", ";
+};
 
 
 const readline = require("readline");
@@ -12,7 +15,7 @@ const commandFuncWrapper = async (func, input) => {
   try {
     await func(input);
   } catch (error) {
-    console.error(error);
+    console.error("Threw error: ", error);
   }
 
   setTimeout(start, 1000);
@@ -21,7 +24,7 @@ const commandFuncWrapper = async (func, input) => {
 const start = async () => {
   console.log("\n------ New Task ------\n");
   
-  rl.question("What is your command? UserCreate, AuthCreate, UserFindByPk, BothCreate \n", function (commandStr) {
+  rl.question(`What is your command? ${commandNames} \n`, function (commandStr) {
     const command = commands[commandStr.toLowerCase()];
 
     rl.question(command.question + " \n", (input)  => {
