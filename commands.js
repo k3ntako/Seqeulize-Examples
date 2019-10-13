@@ -2,6 +2,7 @@ const crypto = require('crypto');
 const db = require('./sequelize/models');
 const User = db.User;
 const UserAuth = db.UserAuth;
+const Course = db.Course;
 const { parseName } = require('./utilities');
 
 module.exports = {
@@ -29,6 +30,21 @@ module.exports = {
         console.log('Found: ', user.toJSON());
       } else {
         console.log('User not found by ID: ' + id);
+      };
+    }
+  },
+  authfindbyuserid: {
+    name: "authFindByUserId",
+    question: "User ID:",
+    purpose: "Find user by primary key (pk) and return User and associated UserAuth.",
+    method: async (id) => {
+      const user = await User.findByPk(Number(id));
+      const auth = await user.getAuth();
+
+      if (auth) {
+        console.log('Found: ', auth.toJSON());
+      } else {
+        console.log('Could not find Auth for user with ID: ' + id);
       };
     }
   },
@@ -76,5 +92,4 @@ module.exports = {
       if (user) console.log('Created: ', user.toJSON());
     }
   },
-
 }
