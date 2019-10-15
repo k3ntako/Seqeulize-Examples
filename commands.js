@@ -3,6 +3,7 @@ const db = require('./sequelize/models');
 const User = db.User;
 const UserAuth = db.UserAuth;
 const Course = db.Course;
+const Assignment = db.Assignment;
 const { parseName } = require('./utilities');
 
 module.exports = {
@@ -69,8 +70,8 @@ module.exports = {
       if (auth) console.log('Created: ', auth.toJSON());
     }
   },
-  bothcreate: {
-    name: "bothCreate",
+  useruserauthcreate: {
+    name: "userUserAuthcreate",
     question: "Name of user, first and last name, split by a space (e.g, Steve Gates):",
     purpose: "Create and commit to db both a User and an associated UserAuth with one call.",
     method: async (name) => {
@@ -90,6 +91,53 @@ module.exports = {
       });
 
       if (user) console.log('Created: ', user.toJSON());
+    }
+  },
+  coursecreate: {
+    name: "courseCreate",
+    question: "Name of course:",
+    purpose: "Create and commit to db a Course.",
+    method: async (name) => {
+      const course = await Course.create({ name });
+
+      if (course) console.log('Created: ', course.toJSON());
+    }
+  },
+  courseassignmentcreate: {
+    name: "courseAssignmentCreate",
+    question: "Name of course:",
+    purpose: "Create and commit to db an Assignment.",
+    method: async (name) => {
+      console.log(Course.associations);
+      
+      const course = await Course.create(
+        { 
+          name,
+          assignments: [{
+            name: `${name} Assignment - ${Date.now()}`,
+            due_date: Date.now(),
+          }],
+        }, {
+          include: [{
+            association: Course.associations.assignments,
+          }],
+        });
+
+      if (course) console.log('Created: ', course.toJSON());
+    }
+  },
+  coursefindbypk: {
+    name: "courseFindByPk",
+    question: "Course ID:",
+    purpose: "Find course by primary key (pk) and return Course and associated Assignemnts.",
+    method: async (id) => {
+      const course = await Course.findByPk(Number(id), { include: { model: Assignment, as: "assignments" } });
+
+      if (course) {
+        console.log('Found: ', course.toJSON());
+      } else {
+        console.log('Course not found by ID: ' + id);
+      };
     }
   },
 }
