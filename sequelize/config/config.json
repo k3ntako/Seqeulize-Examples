@@ -2,21 +2,21 @@
   "development": {
     "username": null,
     "password": null,
-    "database": "wakebird2",
+    "database": "sequelize_examples",
     "host": "127.0.0.1",
     "dialect": "postgres"
   },
   "test": {
     "username": null,
     "password": null,
-    "database": "wakebird2_test",
+    "database": "sequelize_examples_test",
     "host": "127.0.0.1",
     "dialect": "postgres"
   },
   "production": {
     "username": null,
     "password": null,
-    "database": "wakebird2",
+    "database": "sequelize_examples",
     "host": "127.0.0.1",
     "dialect": "postgres"
   }
