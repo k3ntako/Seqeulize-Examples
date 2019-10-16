@@ -39,7 +39,7 @@ Example code for [Seqeulize v5](https://sequelize.org), an ORM (object-relationa
 
 4. Write Seqeulize commands. Here is an example where we find an existing user by primary key:
 ```
-  $ db.User.findByPk(1).then(user => console.log(user.toJSON))
+  $ db.User.findByPk(1).then(user => console.log(user.toJSON()))
 ```
 
 ## Making changes
