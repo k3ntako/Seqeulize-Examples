@@ -16,7 +16,9 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   Assignment.associate = function(models) {
-    Assignment.belongsTo(models.Course);
+    Assignment.belongsTo(models.Course, {
+      foreignKey: 'course_id',
+    });
   };
   return Assignment;
 };

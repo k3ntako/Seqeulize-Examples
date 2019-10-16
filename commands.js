@@ -140,4 +140,23 @@ module.exports = {
       };
     }
   },
+  addcoursetouser: {
+    name: "addCourseToUser",
+    question: "User and Course IDs (in that order separated by a comma - e.g., '1, 3'):",
+    purpose: "Find course by primary key (pk) and return Course and associated Assignemnts.",
+    method: async (ids) => {
+      const [userID, courseID] = ids.split(",").map(id => parseInt(id, 10));
+      let user = await User.findByPk(userID, { include: { model: Course, as: "courses" } });
+
+      const course = await Course.findByPk(courseID);
+      await user.addCourse(course);
+      user = await user.reload();
+
+      if (user) {
+        console.log('Found: ', user.toJSON());
+      } else {
+        console.log('Unable to add course to user');
+      };
+    }
+  },
 }
