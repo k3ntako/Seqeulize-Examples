@@ -45,13 +45,18 @@ Example code for [Seqeulize v5](https://sequelize.org), an ORM (object-relationa
 ## Making changes
 Feel free to fork the project and make any changes.
 
-Table Relationships:
+### Table Relationships:
 - User has one UserAuth
 - UserAuth has one User
 - User has many Courses through UserCourse
 - Course has many Users through UserCourse
 - Course has many Assignments
 - Assignment has one Course
+
+### ER Diagram 
+- Created in [DBeaver](https://dbeaver.io/).
+
+<img src="https://raw.githubusercontent.com/k3ntako/Seqeulize-Examples/master/assets/images/er_diagram_20191015.png" width="450px">
 
 ### Migrations
 To create a new migration and a model:
