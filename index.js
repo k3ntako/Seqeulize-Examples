@@ -25,12 +25,16 @@ const start = async () => {
   console.log("\n------ New Task ------\n");
   
   rl.question(`What is your command? ${commandNames} \n`, function (commandStr) {
-    const command = commands[commandStr.toLowerCase()];
+    try{
+      const command = commands[commandStr.toLowerCase()];
 
-    rl.question(command.question + " \n", (input)  => {
-      commandFuncWrapper(command.method, input)
-    });
-
+      rl.question(command.question + " \n", (input) => {
+        commandFuncWrapper(command.method, input)
+      });
+    }catch(err){
+      console.error(`${commandStr} is not a command:`);
+      setTimeout(start, 1000);
+    }
   });
 }
 
