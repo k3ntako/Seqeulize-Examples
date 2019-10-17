@@ -22,6 +22,7 @@ Example code for [Seqeulize v5](https://sequelize.org), an ORM (object-relationa
 ```
   $ node index.js
 ```
+- When prompted for a command, you can either enter the name of the function (e.g., `userCreate`) **OR** the number to the right (e.g., `0`) without the parentheses.
 
 ### Option 2: Run your own Sequelize commands
 1. Make sure to do steps 1-3 above.
