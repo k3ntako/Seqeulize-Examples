@@ -1,7 +1,9 @@
 const commands = require('./commands');
 let commandNames = "";
-for( let key in commands){
-  commandNames += commands[key].name + ", ";
+let i = 0;
+for( let key in commands ){
+  commandNames += `${commands[key].name} (${i}), `;
+  i++;
 };
 
 
