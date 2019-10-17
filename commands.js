@@ -5,6 +5,9 @@ const UserAuth = db.UserAuth;
 const Course = db.Course;
 const Assignment = db.Assignment;
 const { parseName } = require('./utilities');
+const util = require('util');
+// logs nested objects/arrays (use with nested association):
+const logInstance = (text,  instance) => console.log(text, util.inspect(instance, { depth: null })); 
 
 module.exports = {
   usercreate: {
@@ -25,10 +28,19 @@ module.exports = {
     question: "User ID:",
     purpose: "Find user by primary key (pk) and return User and associated UserAuth.",
     method: async (id) => {
-      const user = await User.findByPk(Number(id), { include: { model: UserAuth, as: "auth" } });
+      const user = await User.findByPk(Number(id), { 
+        include: [
+          { model: UserAuth, as: "auth" },
+          { 
+            model: Course, 
+            as: "courses", 
+            include: { model: Assignment, as: "assignments" }, //includes assignments associated with user's courses
+          }, 
+        ]
+      });
 
       if (user) {
-        console.log('Found: ', user.toJSON());
+        logInstance('Found: ', user.toJSON())
       } else {
         console.log('User not found by ID: ' + id);
       };
