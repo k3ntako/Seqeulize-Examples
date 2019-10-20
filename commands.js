@@ -26,7 +26,7 @@ module.exports = {
   userfindbypk: {
     name: "userFindByPk",
     question: "User ID:",
-    purpose: "Find user by primary key (pk) and return User and associated UserAuth.",
+    purpose: "Find user by primary key (pk) and return User and associated UserAuth and Courses.",
     method: async (id) => {
       const user = await User.findByPk(Number(id), { 
         include: [
@@ -43,6 +43,24 @@ module.exports = {
         logInstance('Found: ', user.toJSON())
       } else {
         console.log('User not found by ID: ' + id);
+      };
+    }
+  },
+  userfindbyemail: {
+    name: "userFindByEmail",
+    question: "User email:",
+    purpose: "Find user by email and return User.",
+    method: async (email) => {
+      const user = await User.findByEmail(email);
+
+      if (user) {
+        const courses = await user.getCourses();
+        const coursesJson = courses.map(course => course.toJSON());
+
+        logInstance('User found: ', user.toJSON());
+        logInstance('Courses found: ', coursesJson);
+      } else {
+        console.log('User not found by email: ' + email);
       };
     }
   },
