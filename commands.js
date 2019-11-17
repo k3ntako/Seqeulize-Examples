@@ -7,7 +7,7 @@ const Assignment = db.Assignment;
 const { parseName } = require('./utilities');
 const util = require('util');
 // logs nested objects/arrays (use with nested association):
-const logInstance = (text,  instance) => console.log(text, util.inspect(instance, { depth: null })); 
+const logInstance = (text,  instance) => console.log(text, util.inspect(instance, { depth: null }));
 
 module.exports = {
   usercreate: {
@@ -28,14 +28,14 @@ module.exports = {
     question: "User ID:",
     purpose: "Find user by primary key (pk) and return User and associated UserAuth and Courses.",
     method: async (id) => {
-      const user = await User.findByPk(Number(id), { 
+      const user = await User.findByPk(Number(id), {
         include: [
           { model: UserAuth, as: "auth" },
-          { 
-            model: Course, 
-            as: "courses", 
+          {
+            model: Course,
+            as: "courses",
             include: { model: Assignment, as: "assignments" }, //includes assignments associated with user's courses
-          }, 
+          },
         ]
       });
 
@@ -111,7 +111,7 @@ module.exports = {
       const user = await User.create({
         firstName, lastName, email,
         auth: {
-          passhash: crypto.pbkdf2Sync("password", salt, 1000, 64, `sha512`).toString(`hex`), //password is alway "password"
+          passhash: crypto.pbkdf2Sync("password", salt, 1000, 64, `sha512`).toString(`hex`), //password is always "password"
           salt: salt,
         }
       }, {
@@ -133,25 +133,41 @@ module.exports = {
       if (course) console.log('Created: ', course.toJSON());
     }
   },
+  assignmentcreate: {
+    name: "assignmentCreate",
+    question: "Course ID and name of assignment (in that order separated by a comma - e.g., '1, First assignment'):",
+    purpose: "Create and commit to db an Assignment.",
+    method: async (input) => {
+      const inputArr = input.split(",");
+      const name = inputArr.slice(1).join(',');
+      const courseID = parseInt(inputArr[0], 10);
+
+      const assignment = await Assignment.create({
+        name,
+        due_date: Date.now(),
+        course_id: courseID,
+      });
+      if (assignment) console.log('Created: ', assignment.toJSON());
+    }
+  },
   courseassignmentcreate: {
     name: "courseAssignmentCreate",
-    question: "Name of course:",
-    purpose: "Create and commit to db an Assignment.",
-    method: async (name) => {
-      console.log(Course.associations);
-      
+    question: "Name of course and name of assignment (in that order separated by a comma - e.g., 'Biology, First assignment'):",
+    purpose: "Create course with an assignment.",
+    method: async (inputRaw) => {
+      const [courseName, assignmentName] = inputRaw.split(',');
       const course = await Course.create(
-        { 
-          name,
+        {
+          name: courseName,
           assignments: [{
-            name: `${name} Assignment - ${Date.now()}`,
+            name: assignmentName,
             due_date: Date.now(),
           }],
         }, {
-          include: [{
-            association: Course.associations.assignments,
-          }],
-        });
+        include: [{
+          association: Course.associations.assignments,
+        }],
+      });
 
       if (course) console.log('Created: ', course.toJSON());
     }
@@ -173,7 +189,7 @@ module.exports = {
   addcoursetouser: {
     name: "addCourseToUser",
     question: "User and Course IDs (in that order separated by a comma - e.g., '1, 3'):",
-    purpose: "Find course by primary key (pk) and return Course and associated Assignemnts.",
+    purpose: "Add user to a course using User and Course IDs",
     method: async (ids) => {
       const [userID, courseID] = ids.split(",").map(id => parseInt(id, 10));
       let user = await User.findByPk(userID, { include: { model: Course, as: "courses" } });
@@ -186,6 +202,25 @@ module.exports = {
         console.log('Found: ', user.toJSON());
       } else {
         console.log('Unable to add course to user');
+      };
+    }
+  },
+  deletecourse: {
+    name: "deleteCourse",
+    question: "ID of course you would like to delete:",
+    purpose: "Delete course by ID",
+    method: async (id) => {
+      const courseID = parseInt(id, 10);
+      const deleteCount = await Course.destroy({
+        where: {
+          id: courseID,
+        }
+      });
+
+      if (deleteCount[0] === 1) {
+        console.log('Deleted course with ID: ', courseID);
+      } else {
+        console.log(`Deleted ${deleteCount[0] || 0} courses. Should have deleted 1 course.`);
       };
     }
   },

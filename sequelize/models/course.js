@@ -12,11 +12,26 @@ module.exports = (sequelize, DataTypes) => {
       as: 'assignments',
     });
 
-    Course.belongsToMany(models.User, { 
+    Course.belongsToMany(models.User, {
       through: 'UserCourse',
       foreignKey: "user_id",
-      as: 'users'
+      as: 'users',
     });
   };
+
+  const beforeDestroy = async (id) => {
+    await sequelize.models.Assignment.destroy({
+      where: { course_id: id },
+    });
+
+    await sequelize.models.UserCourse.destroy({
+      where: { course_id: id },
+    });
+  }
+
+  // Two different ways to define hooks
+  Course.addHook('beforeDestroy', (course, options) => beforeDestroy(course.id));
+  Course.beforeBulkDestroy((options) => beforeDestroy(options.where.id));
+
   return Course;
 };

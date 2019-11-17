@@ -22,7 +22,8 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   Course.associate = function(models) {
-    
+    Course.belongsTo(models.Course);
+    Course.belongsTo(models.User);
   };
   return Course;
 };
