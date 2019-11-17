@@ -20,13 +20,18 @@ module.exports = (sequelize, DataTypes) => {
   };
 
   const beforeDestroy = async (id) => {
-    await sequelize.models.Assignment.destroy({
+    const assignmentDestroyCount = await sequelize.models.Assignment.destroy({
       where: { course_id: id },
     });
 
-    await sequelize.models.UserCourse.destroy({
+    console.log(`Deleted ${assignmentDestroyCount} assignment(s).`);
+
+    const userCourseDestroyCount = await sequelize.models.UserCourse.destroy({
       where: { course_id: id },
     });
+
+    console.log(`Deleted ${userCourseDestroyCount} user_course(s).`);
+
   }
 
   // Two different ways to define hooks

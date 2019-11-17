@@ -139,7 +139,7 @@ module.exports = {
     purpose: "Create and commit to db an Assignment.",
     method: async (input) => {
       const inputArr = input.split(",");
-      const name = inputArr.slice(1).join(',');
+      const name = inputArr.slice(1).join(',').trim();
       const courseID = parseInt(inputArr[0], 10);
 
       const assignment = await Assignment.create({
@@ -158,9 +158,9 @@ module.exports = {
       const [courseName, assignmentName] = inputRaw.split(',');
       const course = await Course.create(
         {
-          name: courseName,
+          name: courseName.trim(),
           assignments: [{
-            name: assignmentName,
+            name: assignmentName.trim(),
             due_date: Date.now(),
           }],
         }, {
@@ -217,10 +217,10 @@ module.exports = {
         }
       });
 
-      if (deleteCount[0] === 1) {
+      if (deleteCount === 1) {
         console.log('Deleted course with ID: ', courseID);
       } else {
-        console.log(`Deleted ${deleteCount[0] || 0} courses. Should have deleted 1 course.`);
+        console.log(`Deleted ${deleteCount} courses. Should have deleted 1 course.`);
       };
     }
   },
