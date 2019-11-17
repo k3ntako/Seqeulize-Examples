@@ -1,5 +1,6 @@
 const crypto = require('crypto');
 const db = require('./sequelize/models');
+const sequelize = db.sequelize;
 const User = db.User;
 const UserAuth = db.UserAuth;
 const Course = db.Course;
@@ -211,17 +212,20 @@ module.exports = {
     purpose: "Delete course by ID",
     method: async (id) => {
       const courseID = parseInt(id, 10);
-      const deleteCount = await Course.destroy({
-        where: {
-          id: courseID,
-        }
-      });
+      await sequelize.transaction(async transaction => {
+        const deleteCount = await Course.destroy({
+          where: {
+            id: courseID,
+          },
+          transaction,
+        });
 
-      if (deleteCount === 1) {
-        console.log('Deleted course with ID: ', courseID);
-      } else {
-        console.log(`Deleted ${deleteCount} courses. Should have deleted 1 course.`);
-      };
+        if (deleteCount === 1) {
+          console.log('Deleted course with ID: ', courseID);
+        } else {
+          throw new Error(`Deleted ${deleteCount} courses. Should have deleted 1 course.`);
+        };
+      });
     }
   },
 }
