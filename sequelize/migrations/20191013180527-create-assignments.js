@@ -6,7 +6,7 @@ module.exports = {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       name: {
         allowNull: false,
@@ -14,22 +14,23 @@ module.exports = {
       },
       due_date: {
         type: Sequelize.DATE,
-      }, 
+      },
       course_id: {
         type: Sequelize.INTEGER,
         references: {
           model: 'courses',
           key: 'id',
         },
-        allowNull: false
+        allowNull: false,
+        onDelete: 'cascade',
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       }
     });
   },

@@ -19,25 +19,5 @@ module.exports = (sequelize, DataTypes) => {
     });
   };
 
-  const beforeDestroy = async (id, transaction) => {
-    const assignmentDestroyCount = await sequelize.models.Assignment.destroy({
-      where: { course_id: id },
-      transaction,
-    });
-
-    console.log(`Deleted ${assignmentDestroyCount} assignment(s).`);
-
-    const userCourseDestroyCount = await sequelize.models.UserCourse.destroy({
-      where: { course_id: id },
-      transaction,
-    });
-
-    console.log(`Deleted ${userCourseDestroyCount} user_course(s).`);
-  }
-
-  // Two different ways to define hooks
-  Course.addHook('beforeDestroy', (course, options) => beforeDestroy(course.id, options.transaction));
-  Course.beforeBulkDestroy((options) => beforeDestroy(options.where.id, options.transaction));
-
   return Course;
 };
