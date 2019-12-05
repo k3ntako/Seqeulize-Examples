@@ -12,6 +12,12 @@ module.exports = (sequelize, DataTypes) => {
       as: 'assignments',
     });
 
+    Course.hasMany(models.UserCourse, {
+      foreignKey: 'course_id',
+      as: 'userCourses',
+    });
+
+
     Course.belongsToMany(models.User, {
       through: 'UserCourse',
       foreignKey: "user_id",

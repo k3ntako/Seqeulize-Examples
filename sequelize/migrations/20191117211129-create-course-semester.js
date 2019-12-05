@@ -1,11 +1,11 @@
 'use strict';
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('user_courses', {
-      user_id: {
+    return queryInterface.createTable('course_semester', {
+      semester_id: {
         type: Sequelize.INTEGER,
         references: {
-          model: 'users',
+          model: 'semesters',
           key: 'id',
         },
         allowNull: false,
@@ -31,6 +31,6 @@ module.exports = {
     });
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('user_courses');
+    return queryInterface.dropTable('course_semester');
   }
 };

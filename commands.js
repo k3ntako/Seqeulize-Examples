@@ -206,6 +206,26 @@ module.exports = {
       };
     }
   },
+  upsertusercourse: {
+    name: "upsertUserCourse",
+    question: "User and Course IDs (in that order separated by a comma - e.g., '1, 3'):",
+    purpose: "Add user to a course using User and Course IDs",
+    method: async (ids) => {
+      const [userID, courseID] = ids.split(",").map(id => parseInt(id, 10));
+      const userCourse = await UserCourse.upsert({
+        user_id: userID,
+        course_id: courseID,
+      }, {
+        returning: true,
+      });
+
+      if (userCourse) {
+        console.log('Found: ', userCourse.toJSON());
+      } else {
+        console.log('Unable to add course to user');
+      };
+    }
+  },
   deletecourse: {
     name: "deleteCourse",
     question: "ID of course you would like to delete:",
