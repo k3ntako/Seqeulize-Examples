@@ -1,5 +1,5 @@
 # Sequelize Examples
-Example code for [Seqeulize v5](https://sequelize.org), an ORM (object-relational mapping) for few different databases. This example uses PostgreSQL. The command line program has methods that will perform simple Sequelize tasks such as inserting into and retreving from the database that I have written in `command.js` (option 1). Alternatively, a user can import the Sequelize models, and run their own Sequelize code in the command line (option 2).
+Example code for [Sequelize v5](https://sequelize.org), an ORM (object-relational mapping) for few different databases. This example uses PostgreSQL. The command line program has methods that will perform simple Sequelize tasks such as inserting into and retreving from the database that I have written in `command.js` (option 1). Alternatively, a user can import the Sequelize models, and run their own Sequelize code in the command line (option 2).
 
  Main purpose of this repo is to create documentation for future me and anyone else who stumbles upon this. 
 
@@ -38,7 +38,7 @@ Example code for [Seqeulize v5](https://sequelize.org), an ORM (object-relationa
   - `sequelize` is the instance of Sequelize and deals with the connection to the db
   - For more information, please look at the `/sequelize/models/index` or the Sequelize [documentation](https://sequelize.org/).
 
-4. Write Seqeulize commands. Here is an example where we find an existing user by primary key:
+4. Write Sequelize commands. Here is an example where we find an existing user by primary key:
 ```
   $ db.User.findByPk(1).then(user => console.log(user.toJSON()))
 ```
@@ -57,7 +57,7 @@ Feel free to fork the project and make any changes.
 ### ER Diagram 
 - Created in [DBeaver](https://dbeaver.io/).
 
-<img src="https://raw.githubusercontent.com/k3ntako/Seqeulize-Examples/master/assets/images/er_diagram_20191015.png" width="450px">
+<img src="https://raw.githubusercontent.com/k3ntako/Sequelize-Examples/master/assets/images/er_diagram_20191015.png" width="450px">
 
 ### Migrations
 To create a new migration and a model:
